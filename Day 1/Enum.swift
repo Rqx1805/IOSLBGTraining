@@ -9,7 +9,6 @@ enum CompassDirection {
     case west
 }
 
-print("--- 1. Basic Enum ---")
 var currentDirection = CompassDirection.north
 // Once the type is known, you can use shorthand dot notation
 currentDirection = .east
@@ -32,11 +31,9 @@ enum HTTPResponseCode: Int {
     case notFound = 404
 }
 
-print("\n--- 2. Enum with Raw Values ---")
 let status = HTTPResponseCode.notFound
 print("The status code name is \(status), and its raw value is \(status.rawValue)")
 
-// You can also initialize an enum from a raw value (returns an Optional)
 if let validResponse = HTTPResponseCode(rawValue: 200) {
     print("Initialization succeeded: \(validResponse)")
 }
@@ -49,7 +46,6 @@ enum NetworkResult {
     case failure(errorCode: Int, message: String) // Carries error details on failure
 }
 
-print("\n--- 3. Enum with Associated Values ---")
 // Simulating two different network responses
 let appResponse: NetworkResult = .success(payload: "{'user': 'Alex'}")
 let apiResponse: NetworkResult = .failure(errorCode: 500, message: "Internal Server Error")

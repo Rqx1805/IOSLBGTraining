@@ -2,7 +2,7 @@ import UIKit
 
 // 1. Basic Closure Assignment
 // This closure takes no parameters and returns nothing (Void).
-let data = { 
+let data = {
     print("Basic Closure")
 }
 // Calling the closure
@@ -19,7 +19,7 @@ print(result)
 
 // 3. Passing a Closure as a Function Argument
 // Functions can accept closures to run code after an action finishes.
-print("\n--- 3. Passing Closure to Function ---")
+
 func performMathOperation(a: Int, b: Int, operation: (Int, Int) -> Int) {
     let output = operation(a, b)
     print("The operation result is: \(output)")

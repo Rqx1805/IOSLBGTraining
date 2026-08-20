@@ -2,7 +2,6 @@ import UIKit
 
 // 1. Define Custom Errors
 // Errors are represented by types that conform to the empty Error protocol.
-// Enums are perfect for this.
 enum APIError: Error {
     case InvalidURL
     case InvalidResponse
