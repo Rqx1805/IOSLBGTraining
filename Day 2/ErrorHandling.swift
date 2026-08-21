@@ -7,6 +7,8 @@ enum APIError: Error {
     case InvalidResponse
     case ServerError(Int)
     case decodingError
+    case invalidUsername
+    case invalidPassword
     
     var errorDescription: String? {
         switch self {
@@ -18,14 +20,20 @@ enum APIError: Error {
             return "Server Error\(statusCode)"
         case .decodingError:
             return "Decoding Error"
+        case .invalidUsername:
+            return "Username Invalid"
+        case .invalidPassword:
+            return "Password Invalid"
         }
     }
 }
 // Struct representing an user in the machine
 struct User: Codable {
+    let id: Int
     let name: String
 }
 
+// SwiftUI
 class APIService {
     // 2. A Function That Throws Errors
     // The 'throws' keyword indicates that this function can fail and throw an error.
@@ -49,10 +57,84 @@ class APIService {
         do {
             let user = try JSONDecoder().decode([User].self, from: data)
             return user
-        } catch {
+        }catch APIError.invalidUsername {
+            print("Username cannot be empty")
+
+        } catch LoginError.invalidPassword {
+            print("Password must contain at least 4 characters")
+
+        }
+        catch {
             // Decoding Error---
             throw APIError.decodingError
         }
         
+    }
+}
+
+// UIKIT
+final class APIService {
+
+    func fetchUsers(
+        completion: @escaping (Result<[User], Error>) -> Void
+    ) {
+
+        guard let url = URL(
+            string: ""
+        ) else {
+            completion(.failure(APIError.InvalidURL))
+            return
+        }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(APIError.InvalidResponse))
+                return
+            }
+
+            do {
+                let users = try JSONDecoder().decode(
+                    [User].self,
+                    from: data
+                )
+
+                DispatchQueue.main.async {
+                    completion(.success(users))
+                }
+
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(APIError.decodingError))
+                }
+            }
+
+        }.resume()
+    }
+}
+
+
+final class UserViewModel {
+
+    private let apiService = APIService()
+
+    func loadUsers() {
+
+        apiService.fetchUsers { result in
+
+            switch result {
+
+            case .success(let users):
+                print("Users count: \(users.count)")
+
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
 }

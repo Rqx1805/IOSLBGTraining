@@ -14,3 +14,12 @@ otherEmployee.name = "Jhon"
 // Verification: The original remains completely unchanged!
 print(employee.name ?? "")
 print(otherEmployee.name ?? "")
+
+// Real iOS example — MVVM
+// Model → Struct
+struct User: Codable {
+    let id: Int
+    let name: String
+    let email: String
+}
+

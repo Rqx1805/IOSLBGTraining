@@ -21,3 +21,14 @@ secondUserEmail.email = "abc@gmail.com"
 print(userEmail.email ?? "")
 print(secondUserEmail.email ?? "")
 
+// Real iOS example — MVVM
+// ViewModel → Class
+final class UserViewModel {
+
+    private(set) var users: [User] = []
+
+    func updateUsers(_ users: [User]) {
+        self.users = users
+    }
+}
+

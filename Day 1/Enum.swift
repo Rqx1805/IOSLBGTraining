@@ -62,3 +62,30 @@ func handleResponse(_ result: NetworkResult) {
 handleResponse(appResponse)
 handleResponse(apiResponse)
 
+
+// Combining Enum + Optional
+enum LoginResult {
+    case success(User)
+    case failure(String)
+}
+
+struct User {
+    let name: String
+    let token: String?
+}
+
+func login(username: String, password: String) -> LoginResult {
+
+    if username == "ashish" && password == "1234" {
+
+        let user = User(
+            name: "Ashish",
+            token: "abc123"
+        )
+
+        return .success(user)
+
+    } else {
+        return .failure("Invalid username or password")
+    }
+}
