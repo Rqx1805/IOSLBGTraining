@@ -1,25 +1,64 @@
-import UIKit
+// MARK: - STRUCT (Value Type)
 
-// STRUCT (Value Type)
 struct Employee {
-    var name: String?
+
+    // No need for Optional because name
+    // is expected to always have a value.
+    var name: String
 }
-// Create the original struct instance
+
+
+// MARK: - Create Original Struct Instance
+
 var employee = Employee(name: "Ashish")
-// Copying a struct creates
+
+
+// MARK: - Copying a Struct
+
+// Structs are Value Types.
+// A new independent copy is created.
+
 var otherEmployee = employee
-// Modify the copy
-otherEmployee.name = "Jhon"
 
-// Verification: The original remains completely unchanged!
-print(employee.name ?? "")
-print(otherEmployee.name ?? "")
 
-// Real iOS example — MVVM
+// MARK: - Modify the Copy
+
+otherEmployee.name = "John"
+
+
+// MARK: - Verification
+
+// Original remains unchanged
+print(employee.name)
+
+// Copy contains the modified value
+print(otherEmployee.name)
+
+
+// Output:
+// Ashish
+// John
+
+
+// MARK: - Real iOS Example — MVVM
+
 // Model → Struct
+
 struct User: Codable {
+
     let id: Int
     let name: String
     let email: String
 }
 
+
+// MARK: - Example User
+
+let user = User(
+    id: 1,
+    name: "Ashish",
+    email: "ashish@example.com"
+)
+
+print(user.name)
+print(user.email)

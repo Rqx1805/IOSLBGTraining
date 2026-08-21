@@ -1,28 +1,36 @@
-import UIKit
+import Foundation
 
-// CLASS (Reference Type)
-class User {
-    var email: String?
-    // Classes require an explicit initializer (structs get one automatically)
+// MARK: - CLASS (Reference Type)
+
+final class User {
+
+    // Non-optional because email is required during initialization
+    var email: String
+
     init(email: String) {
         self.email = email
     }
 }
-// Create the original class instance
-var userEmail = User(email: "ash@gmail.com")
 
-// Copying a class copies the memory address pointer, NOT the data itself
-var secondUserEmail = userEmail
 
-// Modify the copy
+// MARK: - Reference Type Example
+
+// Use let because the instance reference itself does not need reassignment
+let userEmail = User(email: "ash@gmail.com")
+
+// Both variables point to the same User instance
+let secondUserEmail = userEmail
+
+// Modifying the object's property is still allowed
 secondUserEmail.email = "abc@gmail.com"
 
-// Verification: BOTH names changed because they point to the exact same object!
-print(userEmail.email ?? "")
-print(secondUserEmail.email ?? "")
+// Both print the updated value because User is a reference type
+print(userEmail.email)
+print(secondUserEmail.email)
 
-// Real iOS example — MVVM
-// ViewModel → Class
+
+// MARK: - Real iOS Example — MVVM
+
 final class UserViewModel {
 
     private(set) var users: [User] = []
@@ -31,4 +39,3 @@ final class UserViewModel {
         self.users = users
     }
 }
-

@@ -1,91 +1,115 @@
-import UIKit
+// MARK: - 1. Basic Enum
 
-// 1. Basic Enum
-// Defines a strict set of choices.
-enum CompassDirection {
-    case north
-    case south
-    case east
-    case west
+// No UIKit import because this file does not use UIKit.
+
+enum CompassDirection: CaseIterable {
+    case north, south, east, west
 }
 
-var currentDirection = CompassDirection.north
-// Once the type is known, you can use shorthand dot notation
+// Usage
+var currentDirection: CompassDirection = .north
 currentDirection = .east
 
-// Enums are commonly used with switch statements
 switch currentDirection {
-case .north: print("Heading North")
-case .south: print("Heading South")
-case .east:  print("Heading East")
-case .west:  print("Heading West")
+case .north:
+    print("Heading North")
+
+case .south:
+    print("Heading South")
+
+case .east:
+    print("Heading East")
+
+case .west:
+    print("Heading West")
+}
+
+// CaseIterable usage
+print("Total directions: \(CompassDirection.allCases.count)")
+
+for direction in CompassDirection.allCases {
+    print(direction)
 }
 
 
-// 2. Enum with Raw Values
-// Assigns a backing literal value (String, Int, Character, or Float) to each case.
+// MARK: - 2. Enum with Raw Values
+
 enum HTTPResponseCode: Int {
     case success = 200
     case badRequest = 400
     case unauthorized = 401
     case notFound = 404
+
+    // Computed property
+    var message: String {
+        switch self {
+        case .success:
+            return "Request completed successfully"
+
+        case .badRequest:
+            return "Bad Request"
+
+        case .unauthorized:
+            return "Unauthorized"
+
+        case .notFound:
+            return "Resource not found"
+        }
+    }
+
+    // Function to handle response
+    func handleResponse() {
+        switch self {
+        case .success:
+            print("Success: \(message)")
+
+        default:
+            print("Error \(rawValue): \(message)")
+        }
+    }
 }
 
-let status = HTTPResponseCode.notFound
-print("The status code name is \(status), and its raw value is \(status.rawValue)")
 
-if let validResponse = HTTPResponseCode(rawValue: 200) {
-    print("Initialization succeeded: \(validResponse)")
+// Usage with guard instead of if let
+func processResponse(statusCode: Int) {
+    guard let response = HTTPResponseCode(rawValue: statusCode) else {
+        print("Unknown HTTP status code: \(statusCode)")
+        return
+    }
+
+    response.handleResponse()
 }
 
+processResponse(statusCode: 200)
+processResponse(statusCode: 404)
+processResponse(statusCode: 500)
 
-// 3. Enum with Associated Values
-// Allows you to attach additional custom data to each specific case.
+
+// MARK: - 3. Enum with Associated Values
+
 enum NetworkResult {
-    case success(payload: String)          // Carries data on success
-    case failure(errorCode: Int, message: String) // Carries error details on failure
-}
+    case success(String)
+    case failure(Int, message: String)
 
-// Simulating two different network responses
-let appResponse: NetworkResult = .success(payload: "{'user': 'Alex'}")
-let apiResponse: NetworkResult = .failure(errorCode: 500, message: "Internal Server Error")
+    func handle() {
+        switch self {
+        case .success(let data):
+            print("Network Success! Data received: \(data)")
 
-func handleResponse(_ result: NetworkResult) {
-    switch result {
-    case .success(let data):
-        print("Network Success! Data received: \(data)")
-    case .failure(let code, let msg):
-        print("Network Failure! Code: \(code), Message: \(msg)")
+        case .failure(let code, let message):
+            print("Network Failure! Code: \(code), Message: \(message)")
+        }
     }
 }
 
-handleResponse(appResponse)
-handleResponse(apiResponse)
 
+// Usage
+let appResponse: NetworkResult = .success("{'user': 'Alex'}")
 
-// Combining Enum + Optional
-enum LoginResult {
-    case success(User)
-    case failure(String)
-}
+let apiResponse: NetworkResult = .failure(
+    500,
+    message: "Internal Server Error"
+)
 
-struct User {
-    let name: String
-    let token: String?
-}
-
-func login(username: String, password: String) -> LoginResult {
-
-    if username == "ashish" && password == "1234" {
-
-        let user = User(
-            name: "Ashish",
-            token: "abc123"
-        )
-
-        return .success(user)
-
-    } else {
-        return .failure("Invalid username or password")
-    }
-}
+appResponse.handle()
+apiResponse.handle()

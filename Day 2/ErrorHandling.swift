@@ -1,100 +1,133 @@
-import UIKit
+import Foundation
 
-// 1. Define Custom Errors
-// Errors are represented by types that conform to the empty Error protocol.
-enum APIError: Error {
-    case InvalidURL
-    case InvalidResponse
-    case ServerError(Int)
+// MARK: - 1. Custom Errors
+
+enum APIError: LocalizedError {
+    case invalidURL
+    case invalidResponse
+    case serverError(Int)
     case decodingError
     case invalidUsername
     case invalidPassword
-    
+
     var errorDescription: String? {
         switch self {
-        case .InvalidURL:
-            return "InvalidURL"
-        case .InvalidResponse:
-            return "InvalidResponse"
-        case .ServerError(let statusCode):
-            return "Server Error\(statusCode)"
+        case .invalidURL:
+            return "The URL is invalid."
+
+        case .invalidResponse:
+            return "The server returned an invalid response."
+
+        case .serverError(let statusCode):
+            return "Server error with status code: \(statusCode)."
+
         case .decodingError:
-            return "Decoding Error"
+            return "Unable to decode the response."
+
         case .invalidUsername:
-            return "Username Invalid"
+            return "Username is invalid."
+
         case .invalidPassword:
-            return "Password Invalid"
+            return "Password is invalid."
         }
     }
 }
-// Struct representing an user in the machine
+
+
+// MARK: - 2. User Model
+
 struct User: Codable {
     let id: Int
     let name: String
 }
 
-// SwiftUI
-class APIService {
-    // 2. A Function That Throws Errors
-    // The 'throws' keyword indicates that this function can fail and throw an error.
+
+// MARK: - 3. Async/Await API Service
+
+final class AsyncAPIService {
+
     func checkAPIIssue() async throws -> [User] {
-        // Invalid URL---
-        guard let url = URL(string: "") else {
-            throw APIError.InvalidURL
+
+        guard let url = URL(
+            string: "https://jsonplaceholder.typicode.com/users"
+        ) else {
+            throw APIError.invalidURL
         }
-        
+
         let (data, response) = try await URLSession.shared.data(from: url)
-        
-        // Invalid Response ---
-        guard let response = response as? HTTPURLResponse else {
-            throw APIError.InvalidResponse
+
+        // Rename downcast result to httpResponse
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
         }
-        // Server Error---
-        guard 200...299 ~= response.statusCode else {
-            throw APIError.ServerError(response.statusCode)
+
+        // Use contains instead of ~= operator
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw APIError.serverError(httpResponse.statusCode)
         }
-        // 3. Handling Errors Using Do-Catch
+
         do {
-            let user = try JSONDecoder().decode([User].self, from: data)
-            return user
-        }catch APIError.invalidUsername {
-            print("Username cannot be empty")
-
-        } catch LoginError.invalidPassword {
-            print("Password must contain at least 4 characters")
-
-        }
-        catch {
-            // Decoding Error---
+            return try JSONDecoder().decode(
+                [User].self,
+                from: data
+            )
+        } catch {
             throw APIError.decodingError
         }
-        
     }
 }
 
-// UIKIT
+
+// MARK: - 4. UIKit Completion-Based API Service
+
 final class APIService {
 
     func fetchUsers(
         completion: @escaping (Result<[User], Error>) -> Void
     ) {
-
         guard let url = URL(
-            string: ""
+            string: "https://jsonplaceholder.typicode.com/users"
         ) else {
-            completion(.failure(APIError.InvalidURL))
+            completion(.failure(APIError.invalidURL))
             return
         }
 
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) {
+            data,
+            response,
+            error in
 
-            if let error = error {
-                completion(.failure(error))
+            if let error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
                 return
             }
 
-            guard let data = data else {
-                completion(.failure(APIError.InvalidResponse))
+            guard let httpResponse = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    completion(.failure(APIError.invalidResponse))
+                }
+                return
+            }
+
+            guard (200...299).contains(httpResponse.statusCode) else {
+                DispatchQueue.main.async {
+                    completion(
+                        .failure(
+                            APIError.serverError(
+                                httpResponse.statusCode
+                            )
+                        )
+                    )
+                }
+                return
+            }
+
+            guard let data else {
+                DispatchQueue.main.async {
+                    completion(.failure(APIError.invalidResponse))
+                }
                 return
             }
 
@@ -113,11 +146,13 @@ final class APIService {
                     completion(.failure(APIError.decodingError))
                 }
             }
-
-        }.resume()
+        }
+        .resume()
     }
 }
 
+
+// MARK: - 5. ViewModel
 
 final class UserViewModel {
 
@@ -133,8 +168,17 @@ final class UserViewModel {
                 print("Users count: \(users.count)")
 
             case .failure(let error):
+                // LocalizedError automatically provides
+                // the custom errorDescription here.
                 print("Error: \(error.localizedDescription)")
             }
         }
     }
 }
+
+
+// MARK: - Usage
+
+let viewModel = UserViewModel()
+
+viewModel.loadUsers()
