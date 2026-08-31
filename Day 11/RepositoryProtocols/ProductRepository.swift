@@ -17,10 +17,7 @@ final class ProductRepoImpl: ProductRepository {
     
     func fetchProducts() async throws -> [Product] {
         let product = try await remoteDataSource.getProducts()
-        
-        return product.map {
-            product(id: $0.id, name: $0.name, price: $0.price)
-        }
+        return product
     }
 
 }
