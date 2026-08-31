@@ -10,7 +10,7 @@ protocol GetProductUseCase {
 
 final class GetProdductUseCaseImpl: GetProductUseCase {
     
-    let productRepo: ProductRepository
+    private let productRepo: ProductRepository
     
     init(productRepo: ProductRepository) {
         self.productRepo = productRepo

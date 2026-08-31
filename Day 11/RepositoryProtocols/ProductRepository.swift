@@ -9,7 +9,7 @@ protocol ProductRepository {
 // Data Layer -
 
 final class ProductRepoImpl: ProductRepository {
-    let remoteDataSource: ProductRemoteDataSource
+    private let remoteDataSource: ProductRemoteDataSource
     
     init(remoteDataSource: ProductRemoteDataSource) {
         self.remoteDataSource = remoteDataSource
