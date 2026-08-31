@@ -43,7 +43,7 @@ let car = Car(name: "KIA")
 car.start()
 
 // Output:
-// BMW started
+// car started
 
 
 
@@ -64,7 +64,7 @@ let bike = Bike(name: "Bullet")
 bike.start()
 
 // Output:
-// Honda bike started
+// Bullet bike started
 
 
 
@@ -137,8 +137,8 @@ sportsCar.stop()
 
 // Output:
 //
-// Ferrari started
-// Ferrari stopped
+// Mustang started
+// Mustang stopped
 
 
 

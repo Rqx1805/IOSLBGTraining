@@ -39,8 +39,7 @@ import Foundation
 // IMPORTANT:
 // `open` is mainly useful for framework/library code.
 
-
-open class BaseViewController {
+ class BaseViewController {
 
     open var screenTitle: String = "Base Screen"
 
@@ -82,8 +81,7 @@ loginVC.displayScreen()
 //
 // `public` is commonly used for APIs exposed by frameworks.
 
-
-public class APIService {
+ class APIService {
 
     public init() {
     }
@@ -369,8 +367,7 @@ class AnotherClassInSameFile {
 // Keep implementation details private while exposing
 // only what other layers need.
 
-
-public class UserViewModel {
+ class UserViewModel {
 
     // Private implementation detail
     private let service: APIService
