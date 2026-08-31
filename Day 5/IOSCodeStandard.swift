@@ -19,8 +19,9 @@ struct User: Decodable {
 enum NetworkError: Error {
     case invalidURL
     case invalidResponse
-    case decodingFailed
-    case serverError(Int)
+    case statusCode(Int)
+    case decodingError(Error)
+   
 }
 
 
@@ -158,10 +159,10 @@ final class UserListViewModel {
         case .invalidResponse:
             errorMessage = "Invalid server response."
 
-        case .decodingFailed:
-            errorMessage = "Unable to process server data."
+        case .decodingError(let error):
+            errorMessage = "Unable to process server data: \(error)"
 
-        case .serverError(let statusCode):
+        case .statusCode(let statusCode):
             errorMessage = "Server error: \(statusCode)"
         }
     }

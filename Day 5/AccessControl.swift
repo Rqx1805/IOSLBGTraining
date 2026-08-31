@@ -285,7 +285,7 @@ print("Current Balance: \(account.getBalance())")
 
 // This would NOT compile:
 //
-// account.balance = 5000
+// account.balance = 1000
 //
 // ERROR:
 // 'balance' is inaccessible due to 'private' protection level.
