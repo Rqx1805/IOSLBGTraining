@@ -17,7 +17,7 @@ final class GetProdductUseCaseImpl: GetProductUseCase {
     }
     
     func execute() async throws -> [Product] {
-        try await productRepo.fetchProduct()
+        try await productRepo.fetchProducts()
     }
     
 }

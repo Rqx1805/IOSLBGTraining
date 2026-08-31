@@ -6,12 +6,18 @@ final class ProductViewModel: ObservableObject {
     
     private let getProductUseCase: GetProductUseCase
     
-    init(getProductUseCase: getProductUseCase) {
+    init(getProductUseCase: GetProductUseCase) {
         self.getProductUseCase = getProductUseCase
     }
     
     func loadProducts() async {
-        products = try await getProductUseCase.excute()
+        Task {
+            do {
+                products = try await getProductUseCase.execute()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
     
 }
