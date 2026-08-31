@@ -37,13 +37,8 @@ final class UserService: UserServiceProtocol {
             throw NetworkError.invalidResponse
         }
         
-        guard (200...299).contains(
-            httpResponse.statusCode
-        ) else {
-            
-            throw NetworkError.serverError(
-                httpResponse.statusCode
-            )
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.invalidStatusCode(httpResponse.statusCode)
         }
         
         return try JSONDecoder().decode(

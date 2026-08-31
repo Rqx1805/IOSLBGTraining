@@ -2,7 +2,7 @@ import UIKit
 
 final class UserListViewController: UIViewController {
 
-    private let viewModel: UserViewModel
+    private let viewModel: UserListViewModel
 
     private let tableView = UITableView()
 

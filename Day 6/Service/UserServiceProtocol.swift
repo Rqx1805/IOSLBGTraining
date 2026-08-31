@@ -11,8 +11,8 @@ final class UserService: UserServiceProtocol {
 
         return User(
             id: 1,
-            name: "Navneet",
-            email: "nav@yopmail.com"
+            name: "Ashish",
+            email: "ashish@gmail.com"
         )
     }
 }

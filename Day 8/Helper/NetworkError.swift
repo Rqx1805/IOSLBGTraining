@@ -1,6 +1,6 @@
 import Foundation
 
-enum APIError: LocalizedError {
+enum NetworkError: LocalizedError {
     case invalidURL
     case invalidResponse
     case invalidStatusCode(Int)
@@ -21,8 +21,8 @@ enum APIError: LocalizedError {
         case .networkError:
             return "Network Error."
 
-        case .decodingError:
-            return "Unable to decode response."
+        case .decodingError(let error):
+            return "Unable to decode response \(error)"
         }
     }
 }

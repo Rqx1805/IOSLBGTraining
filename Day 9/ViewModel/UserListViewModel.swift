@@ -1,3 +1,16 @@
+// MARK: - User ViewModel
+//
+// ViewModel communicates with UserService.
+// It does not know about URLSession or HTTP.
+//
+// ViewModel
+//     ↓
+// UserService
+//     ↓
+// NetworkClient
+//     ↓
+// URLSession
+
 import Foundation
 
 @MainActor
@@ -25,8 +38,7 @@ final class UserListViewModel {
         }
 
         do {
-            let users = try await service.fetchUsers()
-            self.users = users
+            self.users = try await service.fetchUsers()
 
         } catch let error as NetworkError {
             handle(error)

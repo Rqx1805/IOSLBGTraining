@@ -1,10 +1,11 @@
+// MARK: - Network Client Protocol
+
 import Foundation
 
 protocol NetworkServiceProtocol {
-
-    func request(
-        from url: URL
-    ) async throws -> (Data, URLResponse)
+    func request<T: Decodable>(
+        endpoint: URL
+    ) async throws -> T
 }
 
 
@@ -19,7 +20,7 @@ final class UserService {
 // we use:
 
 private let networkClient:
-    any NetworkClientProtocol
+    any NetworkServiceProtocol
 
 // We can replace the network implementation.
 

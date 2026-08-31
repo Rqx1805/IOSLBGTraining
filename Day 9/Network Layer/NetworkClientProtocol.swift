@@ -1,9 +1,10 @@
+// MARK: - Network Client Protocol
+
 import Foundation
 
-protocol NetworkServiceProtocol {
-
-    func request(
-        from url: URL
-    ) async throws -> (Data, URLResponse)
+protocol NetworkClientProtocol {
+    func request<T: Decodable>(
+        endpoint: URL
+    ) async throws -> T
 }
 

@@ -51,13 +51,13 @@ final class UserListViewModel {
         case .invalidResponse:
             errorMessage = "Invalid server response."
 
-        case .serverError(let statusCode):
+        case .invalidStatusCode(let statusCode):
             errorMessage =
                 "Server error: \(statusCode)"
 
-        case .decodingFailed:
+        case .decodingError(let error):
             errorMessage =
-                "Unable to process server data."
+                "Unable to process server data. \(error)"
         }
     }
 }
