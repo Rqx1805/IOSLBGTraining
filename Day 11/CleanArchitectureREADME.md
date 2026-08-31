@@ -1,4 +1,4 @@
-# IOSLBGTraining
+# Clean Architecture & SwiftUI
 
                     CLEAN ARCHITECTURE
 
