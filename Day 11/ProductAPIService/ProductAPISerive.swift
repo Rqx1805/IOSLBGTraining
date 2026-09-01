@@ -2,7 +2,7 @@ import Foundation
 
 final class ProductAPISerive: ProductRemoteDataSource {
     
-    func fetchProducts() async throws -> [ProductDTO] {
+    func getProducts() async throws -> [ProductDTO] {
         
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else {
             throw errorResponse.invalidURL
