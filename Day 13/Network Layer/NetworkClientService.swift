@@ -11,7 +11,7 @@ final class NetworkClientService: NetworkClientProtocol {
     }
     
     
-    func request<T: Decodable>(endPointUrl: URL) async throw -> T {
+    func request<T: Decodable>(endPointUrl: URL) async throws -> T {
         do {
             let (data, response) = try await session.data(from: endPointUrl)
             

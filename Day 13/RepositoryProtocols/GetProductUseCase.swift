@@ -17,15 +17,9 @@ final class GetProdductUseCaseImpl: GetProductUseCase {
     }
     
     func execute() async throws -> [Product] {
-        let products =
-        try await productRepo.getProducts()
         
-        // Business rule example:
-        // Don't show products with invalid prices.
+       return  try await productRepo.getProducts()
         
-        return products.filter {
-            $0.price >= 0
-        }
     }
     
 }
