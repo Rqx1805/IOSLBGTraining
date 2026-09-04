@@ -1,4 +1,5 @@
-// Dependency Injection (DI) Root of Application Below Code on Application RootView
+// Dependency Injection (DI) Root of Application
+// Please add below code on Application RootView
 
 import SwiftUI
 
