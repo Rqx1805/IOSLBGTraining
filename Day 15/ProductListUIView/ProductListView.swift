@@ -18,12 +18,16 @@ var body: some View {
                 alignment: .leading,
                 spacing: 5
             ) {
+                
+                Text("Product ID: \(product.id)")
+                    .font(.headline)
+                    .font(.subheadline)
 
-                Text(product.name)
+                Text("Name: \(product.name)")
                     .font(.headline)
                     .font(.subheadline)
                 
-                Text(product.email)
+                Text("Email: \(product.email)")
                     .font(.headline)
                     .font(.subheadline)
                 
