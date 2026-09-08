@@ -21,8 +21,8 @@ final class APIService: APIServiceProtocol {
 
         do {
             return try JSONDecoder().decode([User].self, from: data)
-        } catch {
-            throw APIError.dcodingError(error)
+        } catch let error as DecodingError {
+            throw APIError.decodingError(error)
         }
     }
 }

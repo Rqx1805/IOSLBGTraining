@@ -5,17 +5,32 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var viewModel = UserListModel()
     var body: some View {
-        List(viewModel.users) { user in
-            VStack {
-                Text(user.name)
-                Text(user.email)
+        Group {
+            if let errorView = viewModel.errorMessage {
+                VStack(spacing: 12) {
+                    Text("Something went wrong")
+                    .font(.headline)
+                    Text(errorView)
+                    .foregroundStyle(.secondary)
+                    Button("Retry") {
+                        Task {
+                            await viewModel.fetchUser()
+                        }
+                    }
+                } .padding()
+            } else {
+                List(viewModel.users) { user in
+                    VStack {
+                        Text(user.name)
+                        Text(user.email)
+                    }
+                    .padding()
+                }
             }
-            .padding()
         }
-        .onAppear() {
-            viewModel.fetchUser()
+        .task {
+            await viewModel.fetchUser()
         }
-        
     }
 }
 

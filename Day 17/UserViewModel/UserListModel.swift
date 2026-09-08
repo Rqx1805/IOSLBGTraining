@@ -4,22 +4,31 @@ import Foundation
 
 @MainActor
 final class UserListModel: ObservableObject {
-    @Published var users: [User] = []
+    
+    @Published private(set) var users: [User] = []
+    @Published private(set) var isLoading: Bool = false
+    @Published private(set) var errorMessage: String?
+    
     private var apiService: APIServiceProtocol
     
     init(apiService: APIServiceProtocol = APIService()) {
         self.apiService = apiService
     }
     
-    var isloading: Bool = false
-    
     func fetchUser() {
-        Task {
-            do {
-                users = try await apiService.fetchUser()
-            } catch {
-                print(error.localizedDescription)
-            }
+        
+        isLoading = true
+        
+        errorMessage = nil
+        
+        defer {
+            isLoading = false
+        }
+        
+        do {
+            users = try await apiService.fetchUser()
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 }
