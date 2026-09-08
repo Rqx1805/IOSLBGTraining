@@ -1,6 +1,6 @@
 import Foundation
 
-enum errorResponse: Error {
+enum NetworkError: Error {
     case invalidURL
     case invalidResponse
     case invalidStatusCode(Int)

@@ -2,7 +2,9 @@ import Foundation
 
 @MainActor
 final class ProductViewModel: ObservableObject {
-    @Published var products: [Product] = []
+    @Published private(set) var products: [Product] = []
+    @Published private(set) var isLoading: Bool = false
+    @Published private(set) var errorMessage: String?
     
     private let getProductUseCase: GetProductUseCase
     
@@ -11,13 +13,17 @@ final class ProductViewModel: ObservableObject {
     }
     
     func loadProducts() async {
-        Task {
-            do {
-                products = try await getProductUseCase.execute()
-            } catch {
-                print(error.localizedDescription)
-            }
+        isLoading = true
+        errorMessage = nil
+        
+        defer {
+            isLoading = false
         }
+        do {
+            products = try await getProductUseCase.execute()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        
     }
-    
 }

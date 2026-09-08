@@ -8,7 +8,7 @@ protocol GetProductUseCase {
 
 // Domain Layer - Repository Protocol Use Case:
 
-final class GetProdductUseCaseImpl: GetProductUseCase {
+final class GetProductUseCaseImpl: GetProductUseCase {
     
     private let productRepo: ProductRepository
     

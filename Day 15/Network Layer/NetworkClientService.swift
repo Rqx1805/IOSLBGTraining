@@ -18,16 +18,16 @@ final class NetworkClientService: NetworkClientProtocol {
             // MARK: Validate Response
             
             guard let response = response as? HTTPURLResponse else {
-                throw errorResponse.invalidResponse
+                throw NetworkError.invalidResponse
             }
             
             guard (200...299).contains(response.statusCode) else {
-                throw errorResponse.invalidStatusCode(response.statusCode)
+                throw NetworkError.invalidStatusCode(response.statusCode)
             }
             
             return try decoder.decode(T.self, from: data)
-        } catch {
-            throw errorResponse.decodingError(error)
+        } catch let error as DecodingError {
+            throw NetworkError.decodingError(error)
         }
     }
 }

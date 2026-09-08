@@ -28,7 +28,7 @@ init() {
 
     // 4. Use Case
     let useCase: any GetProductUseCase =
-        GetProdductUseCaseImpl(
+    GetProductUseCaseImpl(
             productRepo: repository
         )
 
