@@ -30,7 +30,7 @@ final class NetworkService: NetworkServiceProtocol {
             
             return try decoder.decode(T.self, from: data)
         } catch {
-            throw APIError.dcodingError(error)
+            throw APIError.decodingError(error)
         }
     }
     

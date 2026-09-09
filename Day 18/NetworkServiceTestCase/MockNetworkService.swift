@@ -1,5 +1,5 @@
 import XCTest
-@testable import AppName
+@testable import YourAppName
 
 final class MockNetworkService: NetworkServiceProtocol {
 
@@ -13,6 +13,12 @@ final class MockNetworkService: NetworkServiceProtocol {
             throw APIError.invalidResponse
         }
 
-        return T
+        let user = User(
+            id: 1,
+            name: "Ashish",
+            email: "ashish@test.com"
+        )
+
+        return user as! T
     }
 }
