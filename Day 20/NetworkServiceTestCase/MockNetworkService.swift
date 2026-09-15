@@ -19,6 +19,10 @@ final class MockNetworkService: NetworkServiceProtocol {
             email: "ashish@test.com"
         )
 
-        return user as! T
+        guard let result = user as? T else {
+            throw APIError.invalidResponse
+        }
+
+        return result
     }
 }

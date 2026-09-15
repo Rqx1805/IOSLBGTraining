@@ -16,7 +16,7 @@ final class UserListModel: ObservableObject {
         self.apiService = apiService
     }
     
-    func fetchUser() {
+    func fetchUser() async {
         
         isLoading = true
         

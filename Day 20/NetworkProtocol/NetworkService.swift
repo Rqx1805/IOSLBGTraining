@@ -24,7 +24,7 @@ final class NetworkService: NetworkServiceProtocol {
             }
             
             return try decoder.decode(T.self, from: data)
-        } catch {
+        } catch let error as DecodingError {
             throw APIError.decodingError(error)
         }
     }
